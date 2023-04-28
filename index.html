@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/Localidades_Rehechas_1.js"></script>
+        <script src="data/AreasVerdes_espacios_2.js"></script>
+        <script src="data/Estados_Mx_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[18.98194667111126,-99.43620287804923],[19.671014929948466,-98.4802816224453]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_Voyagernolabelsretina_0');
+        map.getPane('pane_Voyagernolabelsretina_0').style.zIndex = 400;
+        var layer_Voyagernolabelsretina_0 = L.tileLayer('https://a.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}@2x.png', {
+            pane: 'pane_Voyagernolabelsretina_0',
+            opacity: 1.0,
+            attribution: '<a href="https://cartodb.com/basemaps/">Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_Voyagernolabelsretina_0;
+        map.addLayer(layer_Voyagernolabelsretina_0);
+        function pop_Localidades_Rehechas_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Clave de Geográfica</strong><br />' + (feature.properties['CVEGEO'] !== null ? autolinker.link(feature.properties['CVEGEO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Nombre de la entidad</strong><br />' + (feature.properties['NOM_ENT'] !== null ? autolinker.link(feature.properties['NOM_ENT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Nombre del municipio</strong><br />' + (feature.properties['NOM_MUN'] !== null ? autolinker.link(feature.properties['NOM_MUN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Nombre de la localidad</strong><br />' + (feature.properties['NOMGEO'] !== null ? autolinker.link(feature.properties['NOMGEO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población total</strong><br />' + (feature.properties['Pobtot'] !== null ? autolinker.link(feature.properties['Pobtot'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población de 0 a 2 años</strong><br />' + (feature.properties['Pob_0a2'] !== null ? autolinker.link(feature.properties['Pob_0a2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población de 3 a 5 años</strong><br />' + (feature.properties['Pob_3a5'] !== null ? autolinker.link(feature.properties['Pob_3a5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población de 3 a 5 años</strong><br />' + (feature.properties['Pob_6a11'] !== null ? autolinker.link(feature.properties['Pob_6a11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población Femenina 0 a 2 años</strong><br />' + (feature.properties['PobF_0a2'] !== null ? autolinker.link(feature.properties['PobF_0a2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población Femenina 3 a 5 años</strong><br />' + (feature.properties['PobF_3a5'] !== null ? autolinker.link(feature.properties['PobF_3a5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población Femenina 6 a 11 años</strong><br />' + (feature.properties['PobF_6a11'] !== null ? autolinker.link(feature.properties['PobF_6a11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población Masculina 0 a 2 años</strong><br />' + (feature.properties['PObM_0a2'] !== null ? autolinker.link(feature.properties['PObM_0a2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población Masculina 3 a 5 años</strong><br />' + (feature.properties['PobM_3a5'] !== null ? autolinker.link(feature.properties['PobM_3a5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Población Masculina 6 a 11 años</strong><br />' + (feature.properties['PobM_6a11'] !== null ? autolinker.link(feature.properties['PobM_6a11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de establecimientos de frutas y verduras</strong><br />' + (feature.properties['Verduras'] !== null ? autolinker.link(feature.properties['Verduras'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de establecimientos de saludables</strong><br />' + (feature.properties['Salud'] !== null ? autolinker.link(feature.properties['Salud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de establecimientos de no saludables</strong><br />' + (feature.properties['NoSalud'] !== null ? autolinker.link(feature.properties['NoSalud'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Densidad de establecimientos Saludables por cada 100 niñas y niños de 3 a 5 años</strong><br />' + (feature.properties['Salud_3a5'] !== null ? autolinker.link(feature.properties['Salud_3a5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de establecimientos Saludables por cada 100 niñas y niños de 6 a 11 años</strong><br />' + (feature.properties['Salud_6a11'] !== null ? autolinker.link(feature.properties['Salud_6a11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de establecimientos de frutas y verduras por cada 100 niñas y niños de 3 a 5 años</strong><br />' + (feature.properties['Ver_3a5'] !== null ? autolinker.link(feature.properties['Ver_3a5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de establecimientos de frutas y verduras por cada 100 niñas y niños de 6 a 11 años</strong><br />' + (feature.properties['Ver_6a11'] !== null ? autolinker.link(feature.properties['Ver_6a11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de áreas verdes y espacios públicos x localidad</strong><br />' + (feature.properties['Num_Areas'] !== null ? autolinker.link(feature.properties['Num_Areas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de espacios públicos por cada 100 niñas y niños de 3 a 5 años</strong><br />' + (feature.properties['AV_3a5'] !== null ? autolinker.link(feature.properties['AV_3a5'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Número de espacios públicos por cada 100 niñas y niños de 6 a 11 años</strong><br />' + (feature.properties['AV_6a11'] !== null ? autolinker.link(feature.properties['AV_6a11'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Localidades_Rehechas_1_0(feature) {
+            if (feature.properties['AV_6a11'] >= 0.000000 && feature.properties['AV_6a11'] <= 0.306000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(253,248,226,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 0.306000 && feature.properties['AV_6a11'] <= 0.903000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,246,181,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 0.903000 && feature.properties['AV_6a11'] <= 1.718000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(216,243,135,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 1.718000 && feature.properties['AV_6a11'] <= 2.878000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,240,89,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 2.878000 && feature.properties['AV_6a11'] <= 4.605000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(178,238,43,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 4.605000 && feature.properties['AV_6a11'] <= 6.897000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(156,225,8,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 6.897000 && feature.properties['AV_6a11'] <= 11.111000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,182,11,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 11.111000 && feature.properties['AV_6a11'] <= 28.090000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(90,139,14,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 28.090000 && feature.properties['AV_6a11'] <= 66.667000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(57,96,17,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['AV_6a11'] >= 66.667000 && feature.properties['AV_6a11'] <= 87.500000 ) {
+                return {
+                pane: 'pane_Localidades_Rehechas_1',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(24,53,21,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Localidades_Rehechas_1');
+        map.getPane('pane_Localidades_Rehechas_1').style.zIndex = 401;
+        map.getPane('pane_Localidades_Rehechas_1').style['mix-blend-mode'] = 'normal';
+        var layer_Localidades_Rehechas_1 = new L.geoJson(json_Localidades_Rehechas_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Localidades_Rehechas_1',
+            layerName: 'layer_Localidades_Rehechas_1',
+            pane: 'pane_Localidades_Rehechas_1',
+            onEachFeature: pop_Localidades_Rehechas_1,
+            style: style_Localidades_Rehechas_1_0,
+        });
+        bounds_group.addLayer(layer_Localidades_Rehechas_1);
+        map.addLayer(layer_Localidades_Rehechas_1);
+        function pop_AreasVerdes_espacios_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['objectid'] !== null ? autolinker.link(feature.properties['objectid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_AreasVerdes_espacios_2_0() {
+            return {
+                pane: 'pane_AreasVerdes_espacios_2',
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,170,0,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_AreasVerdes_espacios_2');
+        map.getPane('pane_AreasVerdes_espacios_2').style.zIndex = 402;
+        map.getPane('pane_AreasVerdes_espacios_2').style['mix-blend-mode'] = 'normal';
+        var layer_AreasVerdes_espacios_2 = new L.geoJson(json_AreasVerdes_espacios_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_AreasVerdes_espacios_2',
+            layerName: 'layer_AreasVerdes_espacios_2',
+            pane: 'pane_AreasVerdes_espacios_2',
+            onEachFeature: pop_AreasVerdes_espacios_2,
+            style: style_AreasVerdes_espacios_2_0,
+        });
+        bounds_group.addLayer(layer_AreasVerdes_espacios_2);
+        map.addLayer(layer_AreasVerdes_espacios_2);
+        function pop_Estados_Mx_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CVEGEO'] !== null ? autolinker.link(feature.properties['CVEGEO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NOMGEO'] !== null ? autolinker.link(feature.properties['NOMGEO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['POB1'] !== null ? autolinker.link(feature.properties['POB1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Estados_Mx_3_0() {
+            return {
+                pane: 'pane_Estados_Mx_3',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Estados_Mx_3');
+        map.getPane('pane_Estados_Mx_3').style.zIndex = 403;
+        map.getPane('pane_Estados_Mx_3').style['mix-blend-mode'] = 'normal';
+        var layer_Estados_Mx_3 = new L.geoJson(json_Estados_Mx_3, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Estados_Mx_3',
+            layerName: 'layer_Estados_Mx_3',
+            pane: 'pane_Estados_Mx_3',
+            onEachFeature: pop_Estados_Mx_3,
+            style: style_Estados_Mx_3_0,
+        });
+        bounds_group.addLayer(layer_Estados_Mx_3);
+        map.addLayer(layer_Estados_Mx_3);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Estados_Mx_3.png" /> Estados_Mx': layer_Estados_Mx_3,'<img src="legend/AreasVerdes_espacios_2.png" /> AreasVerdes_espacios': layer_AreasVerdes_espacios_2,'Localidades_Rehechas<br /><table><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_00310.png" /></td><td>0 - 0.31</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_031091.png" /></td><td>0.31 - 0.9</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_091722.png" /></td><td>0.9 - 1.72</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_1722883.png" /></td><td>1.72 - 2.88</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_2884614.png" /></td><td>2.88 - 4.61</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_461695.png" /></td><td>4.61 - 6.9</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_6911116.png" /></td><td>6.9 - 11.11</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_111128097.png" /></td><td>11.11 - 28.09</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_280966678.png" /></td><td>28.09 - 66.67</td></tr><tr><td style="text-align: center;"><img src="legend/Localidades_Rehechas_1_66678759.png" /></td><td>66.67 - 87.5</td></tr></table>': layer_Localidades_Rehechas_1,"Voyager [no labels] (retina)": layer_Voyagernolabelsretina_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
